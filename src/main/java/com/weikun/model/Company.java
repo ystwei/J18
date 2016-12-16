@@ -1,6 +1,16 @@
 package com.weikun.model;
 
 public class Company {
+    private Object elist;
+
+    public Object getElist() {
+        return elist;
+    }
+
+    public void setElist(Object elist) {
+        this.elist = elist;
+    }
+
     private Integer cid;
 
     private String name;

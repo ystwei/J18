@@ -3,20 +3,28 @@ package com.weikun.mapper;
 import com.weikun.model.Emp;
 import com.weikun.model.EmpExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
 public interface EmpMapper {
+
+    @Select({
+            "select",
+            "eid, name, sex, email, salary, cid",
+            "from emp",
+            "where cid = #{cid,jdbcType=INTEGER}"
+    })
+    @Results({
+            @Result(column="eid", property="eid", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
+            @Result(column="sex", property="sex", jdbcType=JdbcType.VARCHAR),
+            @Result(column="email", property="email", jdbcType=JdbcType.VARCHAR),
+            @Result(column="salary", property="salary", jdbcType=JdbcType.REAL),
+            @Result(column="cid", property="cid", jdbcType=JdbcType.INTEGER)
+    })
+    List<Emp> selectEmpsByCid(Integer cid);//通过cid键找到所有符合的emp记录
+
     @SelectProvider(type=EmpSqlProvider.class, method="countByExample")
     long countByExample(EmpExample example);
 
@@ -65,7 +73,9 @@ public interface EmpMapper {
         @Result(column="sex", property="sex", jdbcType=JdbcType.VARCHAR),
         @Result(column="email", property="email", jdbcType=JdbcType.VARCHAR),
         @Result(column="salary", property="salary", jdbcType=JdbcType.REAL),
-        @Result(column="cid", property="cid", jdbcType=JdbcType.INTEGER)
+        @Result(column="cid", property="cid", jdbcType=JdbcType.INTEGER),
+        @Result(column="cid", property="com",
+                one = @One(select="com.weikun.mapper.CompanyMapper.selectByPrimaryKey"))
     })
     Emp selectByPrimaryKey(Integer eid);
 

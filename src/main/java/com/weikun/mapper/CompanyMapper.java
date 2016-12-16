@@ -3,17 +3,8 @@ package com.weikun.mapper;
 import com.weikun.model.Company;
 import com.weikun.model.CompanyExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
 public interface CompanyMapper {
@@ -65,7 +56,9 @@ public interface CompanyMapper {
         @Result(column="address", property="address", jdbcType=JdbcType.VARCHAR),
         @Result(column="pro", property="pro", jdbcType=JdbcType.VARCHAR),
         @Result(column="city", property="city", jdbcType=JdbcType.VARCHAR),
-        @Result(column="price", property="price", jdbcType=JdbcType.REAL)
+        @Result(column="price", property="price", jdbcType=JdbcType.REAL),
+        @Result(property = "elist",javaType = List.class,column="cid"
+        ,many = @Many(select="com.weikun.mapper.EmpMapper.selectEmpsByCid"))
     })
     Company selectByPrimaryKey(Integer cid);
 

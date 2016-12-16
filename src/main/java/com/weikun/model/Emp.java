@@ -1,6 +1,16 @@
 package com.weikun.model;
 
 public class Emp {
+    private Object com;
+
+    public Object getCom() {
+        return com;
+    }
+
+    public void setCom(Object com) {
+        this.com = com;
+    }
+
     private Integer eid;
 
     private String name;
